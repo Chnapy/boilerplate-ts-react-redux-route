@@ -2,7 +2,7 @@ import React, { RefObject } from 'react';
 import { Store, createStore, compose, applyMiddleware, Middleware } from 'redux';
 import { History, createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
-import RootReducer from '../reducers/RootReducer';
+import RootReducer, { StoreAction } from '../reducers/RootReducer';
 import { StoreState } from './StoreState';
 import App from '../app/App';
 
@@ -15,7 +15,7 @@ export default class StoreManager {
     }
 
     private readonly history: History;
-    private readonly store: Store<StoreState>;
+    private readonly store: Store<StoreState, StoreAction>;
     private readonly rootReducer: RootReducer;
 
     constructor() {

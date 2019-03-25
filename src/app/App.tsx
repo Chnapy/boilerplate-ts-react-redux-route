@@ -6,14 +6,16 @@ import { History } from 'history';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { Route, Switch } from 'react-router';
-import Loading from '../Loading';
+import Loading from '../loading/Loading';
 import Menu from '../menu/Menu';
 import RootPage from '../page/RootPage';
+import { StoreAction } from '../reducers/RootReducer';
 
 const HomePage = React.lazy(() => import('../home/HomePage'));
+const LoginPage = React.lazy(() => import('../login/LoginPage'));
 
 export interface IAppProps {
-  store: Store;
+  store: Store<StoreState, StoreAction>;
   history: History;
   storeState: StoreState;
 }
@@ -49,6 +51,15 @@ export default class App extends Component<IAppProps, IAppState> {
                 <Switch>
 
                   <Route path='/' exact>
+                    <HomePage />
+                  </Route>
+
+                  <Route path='/login' exact>
+                    <LoginPage />
+                  </Route>
+
+                  {/* TODO Redirect to Home OR Route to 404 ? */}
+                  <Route>
                     <HomePage />
                   </Route>
 

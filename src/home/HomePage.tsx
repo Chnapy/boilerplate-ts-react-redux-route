@@ -26,6 +26,10 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
 
 const mapStateToProps = (state: StoreState): HomePageProps => {
 
+    if(state.page.type !== 'home') {
+        throw new Error();
+    }
+
     return state.page;
 };
 

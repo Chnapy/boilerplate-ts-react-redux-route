@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import { combineReducers, AnyAction } from "redux";
 import { History } from "history";
 import { StoreState } from "../store/StoreState";
 import { LocationChangeAction } from "connected-react-router";
@@ -7,7 +7,7 @@ import PageReducer from "../page/PageReducer";
 import { MyReducer } from "./MyReducer";
 import RouterReducer from "./RouterReducer";
 
-export type StoreAction = LocationChangeAction | any;
+export type StoreAction = LocationChangeAction;
 
 
 export default class RootReducer extends MyReducer<StoreState> {

@@ -1,11 +1,13 @@
 import React from "react";
-
+import style from './loading.module.scss';
 
 export default class Loading extends React.Component {
     
     render() {
         return (
-            <div>Loading...</div>
+            <div className={style.loading}>
+                Loading...
+            </div>
         );
     }
 }
