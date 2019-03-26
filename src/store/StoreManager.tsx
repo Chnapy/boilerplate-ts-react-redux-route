@@ -1,58 +1,50 @@
-import React, { RefObject } from 'react';
-import { Store, createStore, compose, applyMiddleware, Middleware } from 'redux';
-import { History, createBrowserHistory } from 'history';
 import { routerMiddleware } from 'connected-react-router';
+import { createBrowserHistory, History } from 'history';
+import React, { RefObject } from 'react';
+import { applyMiddleware, compose, createStore, Middleware, Store } from 'redux';
+import App from '../app/App';
 import RootReducer, { StoreAction } from '../reducers/RootReducer';
 import { StoreState } from './StoreState';
-import App from '../app/App';
 
 export default class StoreManager {
+  private static getMiddlewares(history: History): Middleware[] {
+    return [
+      routerMiddleware(history) // for dispatching history actions
+    ];
+  }
 
-    private static getMiddlewares(history: History): Middleware[] {
-        return [
-            routerMiddleware(history), // for dispatching history actions
-        ];
-    }
+  private readonly history: History;
+  private readonly store: Store<StoreState, StoreAction>;
+  private readonly rootReducer: RootReducer;
 
-    private readonly history: History;
-    private readonly store: Store<StoreState, StoreAction>;
-    private readonly rootReducer: RootReducer;
+  constructor() {
+    this.history = createBrowserHistory();
 
-    constructor() {
+    this.rootReducer = new RootReducer(this.history);
 
-        this.history = createBrowserHistory();
+    const initialState = this.getInitialState();
 
-        this.rootReducer = new RootReducer(this.history);
+    this.store = createStore(
+      this.rootReducer.reduce,
+      initialState,
+      compose(applyMiddleware(...StoreManager.getMiddlewares(this.history)))
+    );
+  }
 
-        const initialState = this.getInitialState();
+  private getInitialState(): StoreState {
+    return this.rootReducer.getInitialState();
+  }
 
-        this.store = createStore(
-            this.rootReducer.reduce,
-            initialState,
-            compose(
-                applyMiddleware(
-                    ...StoreManager.getMiddlewares(this.history)
-                ),
-            )
-        );
-    }
+  getRenderToDOM(ref: RefObject<App>): JSX.Element {
+    const storeState = this.store.getState();
 
-    private getInitialState(): StoreState {
-        return this.rootReducer.getInitialState();
-    }
-
-    getRenderToDOM(ref: RefObject<App>): JSX.Element {
-
-        const storeState = this.store.getState();
-
-        return (
-            <App
-                ref={ref}
-                store={this.store}
-                history={this.history}
-                storeState={storeState}
-            />
-        );
-    }
-
+    return (
+      <App
+        ref={ref}
+        store={this.store}
+        history={this.history}
+        storeState={storeState}
+      />
+    );
+  }
 }
