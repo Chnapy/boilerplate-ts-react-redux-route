@@ -1,31 +1,31 @@
-import React, { Component, Suspense } from 'react';
-import style from './app.module.scss';
-import { StoreState } from '../store/StoreState';
-import { Store } from 'redux';
-import { History } from 'history';
-import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
-import { Route, Switch } from 'react-router';
+import { History } from 'history';
+import React, { Component, Suspense } from 'react';
+import { Provider } from 'react-redux';
+import { Switch } from 'react-router-dom';
+import { Store } from 'redux';
 import Loading from '../loading/Loading';
 import Menu from '../menu/Menu';
+import PageRouting from '../page/PageRouting';
 import RootPage from '../page/RootPage';
 import { StoreAction } from '../reducers/RootReducer';
+import { IStoreState } from '../store/StoreState';
+import style from './app.module.scss';
 
 const HomePage = React.lazy(() => import('../home/HomePage'));
 const LoginPage = React.lazy(() => import('../login/LoginPage'));
 
 export interface IAppProps {
-  store: Store<StoreState, StoreAction>;
+  store: Store<IStoreState, StoreAction>;
   history: History;
-  storeState: StoreState;
+  storeState: IStoreState;
 }
 
 export interface IAppState {
-  storeState: StoreState;
+  storeState: IStoreState;
 }
 
 export default class App extends Component<IAppProps, IAppState> {
-
   constructor(props: IAppProps) {
     super(props);
     this.state = {
@@ -33,44 +33,21 @@ export default class App extends Component<IAppProps, IAppState> {
     };
   }
 
-  render() {
+  public render() {
     const { store, history } = this.props;
-
+    // console.log(renderPageRoutes());
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-
           <div id={style.app}>
-
             <Menu />
 
             <RootPage>
-
               <Suspense fallback={<Loading />}>
-
-                <Switch>
-
-                  <Route path='/' exact>
-                    <HomePage />
-                  </Route>
-
-                  <Route path='/login' exact>
-                    <LoginPage />
-                  </Route>
-
-                  {/* TODO Redirect to Home OR Route to 404 ? */}
-                  <Route>
-                    <HomePage />
-                  </Route>
-
-                </Switch>
-
+                <Switch>{PageRouting.renderPageRoutes()}</Switch>
               </Suspense>
-
             </RootPage>
-
           </div>
-
         </ConnectedRouter>
       </Provider>
     );

@@ -1,46 +1,39 @@
-import React from "react";
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Dispatch } from 'redux';
+import { IPagePropsAbstract } from '../page/PageTypes';
+import { IStoreState } from '../store/StoreState';
 import style from './homePage.module.scss';
-import { connect } from "react-redux";
-import { StoreState } from "../store/StoreState";
-import { PagePropsAbstract } from "../page/PageProps";
-import { Dispatch } from "redux";
 
-export interface HomePageProps extends PagePropsAbstract<'home'> {
+export interface IHomePageProps extends IPagePropsAbstract<'home'> {}
 
+export interface IHomePageState {}
+
+export class HomePage extends React.Component<IHomePageProps, IHomePageState> {
+  render() {
+    return (
+      <div id={style.home_page}>
+        HomePage {JSON.stringify(this.props)}
+        <Link to="/login">go to LOGIN PAGE</Link>
+      </div>
+    );
+  }
 }
 
-export interface HomePageState {
+const mapStateToProps = (state: IStoreState): IHomePageProps => {
+  if (state.page.type !== 'home') {
+    throw new Error();
+  }
 
-}
-
-export class HomePage extends React.Component<HomePageProps, HomePageState> {
-
-    render() {
-        return (
-            <div id={style.home_page}>
-                HomePage {JSON.stringify(this.props)}
-            </div>
-        );
-    }
-}
-
-const mapStateToProps = (state: StoreState): HomePageProps => {
-
-    if(state.page.type !== 'home') {
-        throw new Error();
-    }
-
-    return state.page;
+  return state.page;
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): {} => {
-    
-    return {
-
-    };
+  return {};
 };
 
-export default connect<HomePageProps, {}, {}, StoreState>(
-    mapStateToProps,
-    mapDispatchToProps
+export default connect<IHomePageProps, {}, {}, IStoreState>(
+  mapStateToProps,
+  mapDispatchToProps
 )(HomePage);

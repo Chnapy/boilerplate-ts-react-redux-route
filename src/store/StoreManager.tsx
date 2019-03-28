@@ -1,10 +1,16 @@
 import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, History } from 'history';
 import React, { RefObject } from 'react';
-import { applyMiddleware, compose, createStore, Middleware, Store } from 'redux';
+import {
+  applyMiddleware,
+  compose,
+  createStore,
+  Middleware,
+  Store
+} from 'redux';
 import App from '../app/App';
 import RootReducer, { StoreAction } from '../reducers/RootReducer';
-import { StoreState } from './StoreState';
+import { IStoreState } from './StoreState';
 
 export default class StoreManager {
   private static getMiddlewares(history: History): Middleware[] {
@@ -14,7 +20,7 @@ export default class StoreManager {
   }
 
   private readonly history: History;
-  private readonly store: Store<StoreState, StoreAction>;
+  private readonly store: Store<IStoreState, StoreAction>;
   private readonly rootReducer: RootReducer;
 
   constructor() {
@@ -31,7 +37,7 @@ export default class StoreManager {
     );
   }
 
-  private getInitialState(): StoreState {
+  private getInitialState(): IStoreState {
     return this.rootReducer.getInitialState();
   }
 

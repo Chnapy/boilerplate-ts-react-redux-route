@@ -3,13 +3,13 @@ import { History } from 'history';
 import { combineReducers } from 'redux';
 import MenuReducer from '../menu/MenuReducer';
 import PageReducer from '../page/PageReducer';
-import { StoreState } from '../store/StoreState';
+import { IStoreState } from '../store/StoreState';
 import { MyReducer } from './MyReducer';
 import RouterReducer from './RouterReducer';
 
 export type StoreAction = LocationChangeAction;
 
-export default class RootReducer extends MyReducer<StoreState> {
+export default class RootReducer extends MyReducer<IStoreState> {
   private readonly routerReducer: RouterReducer;
   private readonly menuReducer: MenuReducer;
   private readonly pageReducer: PageReducer;
@@ -22,15 +22,15 @@ export default class RootReducer extends MyReducer<StoreState> {
     this.pageReducer = new PageReducer();
   }
 
-  getInitialState(): StoreState {
+  getInitialState(action?: StoreAction): IStoreState {
     return {
-      router: this.routerReducer.getInitialState(),
-      menu: this.menuReducer.getInitialState(),
-      page: this.pageReducer.getInitialState()
+      router: this.routerReducer.getInitialState(action),
+      menu: this.menuReducer.getInitialState(action),
+      page: this.pageReducer.getInitialState(action)
     };
   }
 
-  onReduce(state: StoreState, action: StoreAction): StoreState {
+  onReduce(state: IStoreState, action: StoreAction): IStoreState {
     return combineReducers({
       router: this.routerReducer.reduce,
 

@@ -1,13 +1,11 @@
-import { RouterState } from "connected-react-router";
-import { MenuProps } from "../menu/Menu";
-import { PageProps } from "../page/PageProps";
+import { RouterState } from 'connected-react-router';
+import { MenuProps } from '../menu/Menu';
+import { PageProps } from '../page/PageTypes';
 
-export interface StoreState {
+export interface IStoreState {
+  router: RouterState;
 
-    router: RouterState;
-    
-    menu: MenuProps;
+  menu: MenuProps;
 
-    page: PageProps;
-
+  page: PageProps;
 }

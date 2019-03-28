@@ -1,24 +1,21 @@
-import { StoreAction } from "../reducers/RootReducer";
-import { MyReducer } from "../reducers/MyReducer";
-import { RouterState, connectRouter } from "connected-react-router";
-import { History } from "history";
+import { connectRouter, RouterState } from 'connected-react-router';
+import { History } from 'history';
+import { MyReducer } from '../reducers/MyReducer';
+import { StoreAction } from '../reducers/RootReducer';
 
 export default class RouterReducer extends MyReducer<RouterState> {
+  private readonly history: History;
 
-    private readonly history: History;
+  constructor(history: History) {
+    super();
+    this.history = history;
+  }
 
-    constructor(history: History) {
-        super();
-        this.history = history;
-    }
+  getInitialState(action?: StoreAction): RouterState {
+    return undefined as any;
+  }
 
-    getInitialState(): RouterState {
-        return undefined as any;
-    }
-
-    onReduce(state: RouterState | undefined, action: StoreAction): RouterState {
-
-        return state || connectRouter(this.history)(state, action);
-    }
-
+  onReduce(state: RouterState | undefined, action: StoreAction): RouterState {
+    return state || connectRouter(this.history)(state, action);
+  }
 }

@@ -1,19 +1,22 @@
 {
-    "extends": [
-        "tslint:recommended",
-        "tslint-immutable",
-        "tslint-react",
-        "tslint-config-prettier"
+  "extends": [
+    "tslint:recommended",
+    "tslint-immutable",
+    "tslint-react",
+    "tslint-config-prettier"
+  ],
+  "rulesDirectory": ["node_modules/tslint-eslint-rules/dist/rules"],
+  "rules": {
+    "sort-imports": [
+      2,
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": false,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+      }
     ],
-    "rulesDirectory": [
-        "node_modules/tslint-eslint-rules/dist/rules"
-    ],
-    "rules": {
-        "sort-imports": [2, {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": false,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
-        }]
-    }
+    "object-literal-sort-keys": false,
+    "member-access": false
+  }
 }
