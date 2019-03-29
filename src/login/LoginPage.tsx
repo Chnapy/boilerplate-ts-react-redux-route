@@ -15,6 +15,7 @@ export class LoginPage extends React.Component<
   ILoginPageState
 > {
   render() {
+    console.log('Login render');
     return (
       <div id={style.login_page}>
         LoginPage {JSON.stringify(this.props)}

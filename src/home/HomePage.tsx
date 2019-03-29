@@ -12,6 +12,7 @@ export interface IHomePageState {}
 
 export class HomePage extends React.Component<IHomePageProps, IHomePageState> {
   render() {
+    console.log('Home render');
     return (
       <div id={style.home_page}>
         HomePage {JSON.stringify(this.props)}

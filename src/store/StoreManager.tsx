@@ -10,12 +10,16 @@ import {
 } from 'redux';
 import App from '../app/App';
 import RootReducer, { StoreAction } from '../reducers/RootReducer';
+import crashReporterMiddleware from './middlewares/CrashReporterMiddleware';
+import loggerMiddleware from './middlewares/LoggerMiddleware';
 import { IStoreState } from './StoreState';
 
 export default class StoreManager {
   private static getMiddlewares(history: History): Middleware[] {
     return [
-      routerMiddleware(history) // for dispatching history actions
+      routerMiddleware(history), // for dispatching history actions
+      loggerMiddleware,
+      crashReporterMiddleware
     ];
   }
 

@@ -19,14 +19,11 @@ export default class PageReducer extends MyReducer<PageProps> {
   }
 
   onReduce(state: PageProps, action: StoreAction): PageProps {
-    console.log('action', action);
     switch (action.type) {
       case LOCATION_CHANGE:
         const { pathname } = action.payload.location;
 
         const reducer = PageRouting.getReducerPage(pathname);
-
-        // console.log('state', reducer.reduce(state, action));
 
         return reducer.reduce(state, action);
     }

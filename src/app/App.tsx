@@ -32,7 +32,7 @@ export default class App extends Component<IAppProps, IAppState> {
 
   public render() {
     const { store, history } = this.props;
-    // console.log(renderPageRoutes());
+    console.log('App render');
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
