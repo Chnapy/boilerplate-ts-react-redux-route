@@ -37,10 +37,6 @@ export default class StoreManager {
     );
   }
 
-  private getInitialState(): IStoreState {
-    return this.rootReducer.getInitialState();
-  }
-
   getRenderToDOM(ref: RefObject<App>): JSX.Element {
     const storeState = this.store.getState();
 
@@ -52,5 +48,9 @@ export default class StoreManager {
         storeState={storeState}
       />
     );
+  }
+
+  private getInitialState(): IStoreState {
+    return this.rootReducer.getInitialState();
   }
 }

@@ -1,15 +1,15 @@
 import { MyReducer } from '../reducers/MyReducer';
 import { StoreAction } from '../reducers/RootReducer';
-import { MenuProps } from './Menu';
+import { IMenuProps } from './Menu';
 
-export default class MenuReducer extends MyReducer<MenuProps> {
-  getInitialState(action?: StoreAction): MenuProps {
+export default class MenuReducer extends MyReducer<IMenuProps> {
+  getInitialState(action?: StoreAction): IMenuProps {
     return {
       reduced: false
     };
   }
 
-  onReduce(state: MenuProps, action: StoreAction): MenuProps {
+  onReduce(state: IMenuProps, action: StoreAction): IMenuProps {
     return state;
   }
 }

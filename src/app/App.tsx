@@ -12,9 +12,6 @@ import { StoreAction } from '../reducers/RootReducer';
 import { IStoreState } from '../store/StoreState';
 import style from './app.module.scss';
 
-const HomePage = React.lazy(() => import('../home/HomePage'));
-const LoginPage = React.lazy(() => import('../login/LoginPage'));
-
 export interface IAppProps {
   store: Store<IStoreState, StoreAction>;
   history: History;
