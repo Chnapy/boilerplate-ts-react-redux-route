@@ -13,6 +13,10 @@ export interface IMenuItem<T extends PageType = PageType> {
   routeConfig: RouteConfig;
 }
 
+// export interface IMenuPropsReducer {
+
+// }
+
 export interface IMenuProps {
   items: IMenuItem[];
   activeItem?: IMenuItem;

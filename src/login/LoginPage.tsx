@@ -3,26 +3,9 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { IDispatcher, IPagePropsAbstract } from '../page/PageTypes';
 import { IStoreState } from '../store/StoreState';
+import { UserState } from '../user/UserType';
 import style from './loginPage.module.scss';
 import { ILoginRequestAction } from './LoginPageReducer';
-
-type UserStateType = 'disconnected' | 'connected';
-
-interface IUserStateAbstract<T extends UserStateType> {
-  type: T;
-}
-
-export interface IUserStateDisconnected
-  extends IUserStateAbstract<'disconnected'> {
-  loading?: boolean;
-}
-
-export interface IUserStateConnected extends IUserStateAbstract<'connected'> {
-  username: string;
-  token: string;
-}
-
-export type UserState = IUserStateDisconnected | IUserStateConnected;
 
 // props
 export interface ILoginPageProps extends IPagePropsAbstract<'login'> {
@@ -102,11 +85,14 @@ export class LoginPage extends React.Component<
 }
 
 const mapStateToProps = (state: IStoreState): ILoginPageProps => {
-  if (state.page.type !== 'login') {
-    throw new Error();
-  }
+  // if (state.page.type !== 'login') {
+  //   throw new Error();
+  // }
 
-  return state.page;
+  return {
+    type: 'login',
+    userState: state.user
+  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): ILoginPageDispatcher => {

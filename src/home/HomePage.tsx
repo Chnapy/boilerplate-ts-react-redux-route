@@ -22,11 +22,13 @@ export class HomePage extends React.Component<IHomePageProps, IHomePageState> {
 }
 
 const mapStateToProps = (state: IStoreState): IHomePageProps => {
-  if (state.page.type !== 'home') {
-    throw new Error();
-  }
+  // if (state.page.type !== 'home') {
+  //   throw new Error();
+  // }
 
-  return state.page;
+  return {
+    type: 'home'
+  };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch): {} => {
