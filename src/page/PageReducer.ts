@@ -5,6 +5,8 @@ import PageRouting from './PageRouting';
 import { PageProps } from './PageTypes';
 
 export default class PageReducer extends MyReducer<PageProps> {
+  private reducer!: MyReducer<PageProps>;
+
   getInitialState(action?: StoreAction): PageProps {
     let pathname: string;
     if (action && action.type === LOCATION_CHANGE) {
@@ -13,9 +15,9 @@ export default class PageReducer extends MyReducer<PageProps> {
       pathname = location.pathname;
     }
 
-    const reducer = PageRouting.getReducerPage(pathname);
+    this.reducer = PageRouting.getReducerPage(pathname, this.dispatch);
 
-    return reducer.getInitialState(action);
+    return this.reducer.getInitialState(action);
   }
 
   onReduce(state: PageProps, action: StoreAction): PageProps {
@@ -23,11 +25,11 @@ export default class PageReducer extends MyReducer<PageProps> {
       case LOCATION_CHANGE:
         const { pathname } = action.payload.location;
 
-        const reducer = PageRouting.getReducerPage(pathname);
+        this.reducer = PageRouting.getReducerPage(pathname, this.dispatch);
 
-        return reducer.reduce(state, action);
+        break;
     }
 
-    return state;
+    return this.reducer.reduce(state, action);
   }
 }

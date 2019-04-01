@@ -1,4 +1,13 @@
-
 #menu {
-    background-color: #FBFBFB;
+  background-color: #fbfbfb;
+
+  nav ul {
+    > li {
+      > a.active {
+        font-weight: bold;
+        text-decoration: none;
+        pointer-events: none;
+      }
+    }
+  }
 }

@@ -1,28 +1,104 @@
-import React from 'react';
+import React, { FormEvent } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
-import { IPagePropsAbstract } from '../page/PageTypes';
+import { IDispatcher, IPagePropsAbstract } from '../page/PageTypes';
 import { IStoreState } from '../store/StoreState';
 import style from './loginPage.module.scss';
+import { ILoginRequestAction } from './LoginPageReducer';
 
-export interface ILoginPageProps extends IPagePropsAbstract<'login'> {}
+type UserStateType = 'disconnected' | 'connected';
 
+interface IUserStateAbstract<T extends UserStateType> {
+  type: T;
+}
+
+export interface IUserStateDisconnected
+  extends IUserStateAbstract<'disconnected'> {
+  loading?: boolean;
+}
+
+export interface IUserStateConnected extends IUserStateAbstract<'connected'> {
+  username: string;
+  token: string;
+}
+
+export type UserState = IUserStateDisconnected | IUserStateConnected;
+
+// props
+export interface ILoginPageProps extends IPagePropsAbstract<'login'> {
+  userState: UserState;
+}
+
+// dispatcher
+type ILoginPageDispatcher = IDispatcher<{
+  login: (username: string, password: string) => ILoginRequestAction;
+}>;
+
+// state
 export interface ILoginPageState {}
 
+// component
 export class LoginPage extends React.Component<
-  ILoginPageProps,
+  ILoginPageProps & ILoginPageDispatcher,
   ILoginPageState
 > {
   render() {
-    console.log('Login render');
+    const { userState } = this.props;
+    console.log('Login render', this.props);
+
+    let subContent;
+    switch (userState.type) {
+      case 'disconnected':
+        console.log('user state: disconnected - loading:', userState.loading);
+        if (userState.loading) {
+          subContent = 'Check...';
+        }
+        break;
+      case 'connected':
+        console.log(
+          'user state: connected - username:',
+          userState.username,
+          'token:',
+          userState.token
+        );
+        subContent = 'Checked !';
+    }
+
     return (
       <div id={style.login_page}>
-        LoginPage {JSON.stringify(this.props)}
-        <Link to="/">go to HOME PAGE</Link>
+        <h1>LoginPage</h1>
+        <small>{JSON.stringify(this.props)}</small>
+
+        <div>
+          <form onSubmit={this.onSubmit}>
+            <label>Username</label>
+            <input name="username" type="text" required={true} />
+            <br />
+
+            <label>Password</label>
+            <input name="password" type="password" required={true} />
+            <br />
+
+            <input type="submit" />
+            {subContent}
+          </form>
+        </div>
       </div>
     );
   }
+
+  private onSubmit = (e: FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    const formData: FormData = new FormData(e.currentTarget);
+    const username = formData.get('username');
+    const password = formData.get('password');
+
+    if (typeof username !== 'string' || typeof password !== 'string') {
+      throw new Error();
+    }
+
+    this.props.dispatcher.login(username, password);
+  };
 }
 
 const mapStateToProps = (state: IStoreState): ILoginPageProps => {
@@ -33,11 +109,26 @@ const mapStateToProps = (state: IStoreState): ILoginPageProps => {
   return state.page;
 };
 
-const mapDispatchToProps = (dispatch: Dispatch): {} => {
-  return {};
+const mapDispatchToProps = (dispatch: Dispatch): ILoginPageDispatcher => {
+  return {
+    dispatcher: {
+      login: (username: string, password: string) =>
+        dispatch<ILoginRequestAction>({
+          type: 'login/REQUEST',
+          form: {
+            username,
+            password
+          }
+        })
+    }
+  };
 };
 
-export default connect<ILoginPageProps, {}, {}, IStoreState>(
+export default connect<ILoginPageProps, ILoginPageDispatcher, {}, IStoreState>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  null,
+  {
+    pure: false
+  }
 )(LoginPage);

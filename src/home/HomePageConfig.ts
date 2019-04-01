@@ -6,8 +6,10 @@ const HomePage = React.lazy(() => import('./HomePage'));
 const HomePageConfig: IPageInfos<'home'> = {
   routeConfig: {
     path: '/',
-    exact: true
+    exact: true,
+    strict: true
   },
+  menuItem: { content: 'Accueil' },
   type: 'home',
   component: HomePage,
   reducer: HomePageReducer

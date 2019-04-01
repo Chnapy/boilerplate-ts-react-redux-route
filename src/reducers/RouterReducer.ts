@@ -1,13 +1,18 @@
-import { connectRouter, RouterState } from 'connected-react-router';
+import {
+  connectRouter,
+  LocationChangeAction,
+  RouterState
+} from 'connected-react-router';
 import { History } from 'history';
+import { Dispatch } from 'redux';
 import { MyReducer } from '../reducers/MyReducer';
 import { StoreAction } from '../reducers/RootReducer';
 
 export default class RouterReducer extends MyReducer<RouterState> {
   private readonly history: History;
 
-  constructor(history: History) {
-    super();
+  constructor(dispatch: Dispatch<StoreAction>, history: History) {
+    super(dispatch);
     this.history = history;
   }
 
@@ -15,7 +20,10 @@ export default class RouterReducer extends MyReducer<RouterState> {
     return undefined as any;
   }
 
-  onReduce(state: RouterState | undefined, action: StoreAction): RouterState {
-    return state || connectRouter(this.history)(state, action);
+  onReduce(
+    state: Readonly<RouterState>,
+    action: LocationChangeAction
+  ): RouterState {
+    return connectRouter(this.history)(state, action);
   }
 }

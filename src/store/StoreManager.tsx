@@ -5,6 +5,7 @@ import {
   applyMiddleware,
   compose,
   createStore,
+  Dispatch,
   Middleware,
   Store
 } from 'redux';
@@ -30,7 +31,10 @@ export default class StoreManager {
   constructor() {
     this.history = createBrowserHistory();
 
-    this.rootReducer = new RootReducer(this.history);
+    const dispatch: Dispatch<StoreAction> = action =>
+      this.store.dispatch(action);
+
+    this.rootReducer = new RootReducer(dispatch, this.history);
 
     const initialState = this.getInitialState();
 

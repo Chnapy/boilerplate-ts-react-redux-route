@@ -8,6 +8,7 @@ const LoginPageConfig: IPageInfos<'login'> = {
   routeConfig: {
     path: '/login'
   },
+  menuItem: { content: 'Connexion' },
   type: 'login',
   component: LoginPage,
   reducer: LoginPageReducer

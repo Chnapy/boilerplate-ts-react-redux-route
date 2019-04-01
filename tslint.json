@@ -17,6 +17,7 @@
       }
     ],
     "object-literal-sort-keys": false,
-    "member-access": false
+    "member-access": false,
+    "array-type": [true, "array"]
   }
 }

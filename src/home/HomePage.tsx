@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { Dispatch } from 'redux';
 import { IPagePropsAbstract } from '../page/PageTypes';
 import { IStoreState } from '../store/StoreState';
@@ -15,8 +14,8 @@ export class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     console.log('Home render');
     return (
       <div id={style.home_page}>
-        HomePage {JSON.stringify(this.props)}
-        <Link to="/login">go to LOGIN PAGE</Link>
+        <h1>HomePage</h1>
+        <small>{JSON.stringify(this.props)}</small>
       </div>
     );
   }
@@ -36,5 +35,9 @@ const mapDispatchToProps = (dispatch: Dispatch): {} => {
 
 export default connect<IHomePageProps, {}, {}, IStoreState>(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
+  null,
+  {
+    pure: false
+  }
 )(HomePage);

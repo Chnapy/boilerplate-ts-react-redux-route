@@ -1,25 +1,26 @@
 import { LocationChangeAction } from 'connected-react-router';
 import { History } from 'history';
-import { combineReducers } from 'redux';
+import { combineReducers, Dispatch } from 'redux';
+import { LoginAction } from '../login/LoginPageReducer';
 import MenuReducer from '../menu/MenuReducer';
 import PageReducer from '../page/PageReducer';
 import { IStoreState } from '../store/StoreState';
 import { MyReducer } from './MyReducer';
 import RouterReducer from './RouterReducer';
 
-export type StoreAction = LocationChangeAction;
+export type StoreAction = LocationChangeAction | LoginAction;
 
 export default class RootReducer extends MyReducer<IStoreState> {
   private readonly routerReducer: RouterReducer;
   private readonly menuReducer: MenuReducer;
   private readonly pageReducer: PageReducer;
 
-  constructor(history: History) {
-    super();
+  constructor(dispatch: Dispatch<StoreAction>, history: History) {
+    super(dispatch);
 
-    this.routerReducer = new RouterReducer(history);
-    this.menuReducer = new MenuReducer();
-    this.pageReducer = new PageReducer();
+    this.routerReducer = new RouterReducer(dispatch, history);
+    this.menuReducer = new MenuReducer(dispatch);
+    this.pageReducer = new PageReducer(dispatch);
   }
 
   getInitialState(action?: StoreAction): IStoreState {
@@ -30,7 +31,7 @@ export default class RootReducer extends MyReducer<IStoreState> {
     };
   }
 
-  onReduce(state: IStoreState, action: StoreAction): IStoreState {
+  onReduce(state: Readonly<IStoreState>, action: StoreAction): IStoreState {
     return combineReducers({
       router: this.routerReducer.reduce,
 
