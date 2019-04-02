@@ -3,23 +3,26 @@ import { MyReducer } from '../reducers/MyReducer';
 import { StoreAction } from '../reducers/RootReducer';
 import { ILoginPageProps } from './LoginPage';
 
-export interface ILoginRequestAction extends Action<'login/REQUEST'> {
-  type: 'login/REQUEST';
+export interface IUserLoginRequestAction extends Action<'user/login/REQUEST'> {
+  type: 'user/login/REQUEST';
   form: {
     username: string;
     password: string;
   };
 }
 
-export interface ILoginResponseAction extends Action<'login/RESPONSE'> {
-  type: 'login/RESPONSE';
+export interface IUserLoginResponseAction
+  extends Action<'user/login/RESPONSE'> {
+  type: 'user/login/RESPONSE';
   data: {
     username: string;
     token: string;
   };
 }
 
-export type LoginAction = ILoginRequestAction | ILoginResponseAction;
+export type UserLoginAction =
+  | IUserLoginRequestAction
+  | IUserLoginResponseAction;
 
 export default class LoginPageReducer extends MyReducer<ILoginPageProps> {
   getInitialState(): ILoginPageProps {
@@ -39,70 +42,46 @@ export default class LoginPageReducer extends MyReducer<ILoginPageProps> {
       state = this.getInitialState();
     }
 
-    switch (action.type) {
-      case 'login/REQUEST':
-        return this.onRequest(state, action);
+    switch (
+      action.type
+      // case 'login/REQUEST':
+      //   return this.onRequest(state, action);
 
-      case 'login/RESPONSE':
-        return this.onResponse(state, action);
+      // case 'login/RESPONSE':
+      //   return this.onResponse(state, action);
+    ) {
     }
-
-    return state;
-  }
-
-  private onRequest(
-    state: Readonly<ILoginPageProps>,
-    action: ILoginRequestAction
-  ): ILoginPageProps {
-    const { username, password } = action.form;
-
-    const { userState } = state;
-    if (userState.type === 'connected') {
-      throw new Error();
-    }
-
-    // TODO
-    // make auth
-    // then on response:
-
-    const token = '...token...'; // mock
-
-    setTimeout(() => {
-      this.dispatch<ILoginResponseAction>({
-        type: 'login/RESPONSE',
-        data: {
-          username,
-          token
-        }
-      });
-    }, 1000);
 
     return {
-      ...state,
-      userState: {
-        ...state.userState,
-        type: 'disconnected',
-        loading: true
-      }
+      ...state
     };
   }
 
-  private onResponse(
-    state: Readonly<ILoginPageProps>,
-    action: ILoginResponseAction
-  ): ILoginPageProps {
-    const { token, username } = action.data;
-    console.log('res', token, username);
+  // private onRequest(
+  //   state: Readonly<ILoginPageProps>,
+  //   action: ILoginRequestAction
+  // ): ILoginPageProps {
+  //   const { username, password } = action.form;
 
-    state = {
-      ...state,
-      userState: {
-        type: 'connected',
-        token,
-        username
-      }
-    };
+  //   return state;
+  // }
 
-    return state;
-  }
+  // private onResponse(
+  //   state: Readonly<ILoginPageProps>,
+  //   action: ILoginResponseAction
+  // ): ILoginPageProps {
+  //   const { token, username } = action.data;
+  //   console.log('res', token, username);
+
+  //   state = {
+  //     ...state,
+  //     userState: {
+  //       type: 'connected',
+  //       token,
+  //       username
+  //     }
+  //   };
+
+  //   return state;
+  // }
 }

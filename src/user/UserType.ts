@@ -9,6 +9,7 @@ export interface IUserStateDisconnected
   loading?: boolean;
 }
 
+// TODO abilities
 export interface IUserStateConnected extends IUserStateAbstract<'connected'> {
   username: string;
   token: string;

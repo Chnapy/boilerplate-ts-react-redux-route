@@ -1,11 +1,29 @@
-import { Dispatch } from 'redux';
+import { Action, Dispatch } from 'redux';
+import Http from '../data/Http';
 import {
-  ILoginRequestAction,
-  ILoginResponseAction
+  IUserLoginRequestAction,
+  IUserLoginResponseAction
 } from '../login/LoginPageReducer';
 import { MyReducer } from '../reducers/MyReducer';
 import { StoreAction } from '../reducers/RootReducer';
 import { UserState } from './UserType';
+
+export interface IUserLoginRequestAction extends Action<'user/login/REQUEST'> {
+  type: 'user/login/REQUEST';
+  form: {
+    username: string;
+    password: string;
+  };
+}
+
+export interface IUserLoginResponseAction
+  extends Action<'user/login/RESPONSE'> {
+  type: 'user/login/RESPONSE';
+  data: {
+    username: string;
+    token: string;
+  };
+}
 
 export default class UserReducer extends MyReducer<UserState> {
   constructor(dispatch: Dispatch<StoreAction>) {
@@ -20,10 +38,10 @@ export default class UserReducer extends MyReducer<UserState> {
 
   onReduce(state: Readonly<UserState>, action: StoreAction): UserState {
     switch (action.type) {
-      case 'login/REQUEST':
+      case 'user/login/REQUEST':
         return this.onRequest(state, action);
 
-      case 'login/RESPONSE':
+      case 'user/login/RESPONSE':
         return this.onResponse(state, action);
     }
 
@@ -32,7 +50,7 @@ export default class UserReducer extends MyReducer<UserState> {
 
   private onRequest(
     state: Readonly<UserState>,
-    action: ILoginRequestAction
+    action: IUserLoginRequestAction
   ): UserState {
     const { username, password } = action.form;
 
@@ -44,17 +62,24 @@ export default class UserReducer extends MyReducer<UserState> {
     // make auth
     // then on response:
 
-    const token = '...token...'; // mock
+    const http = Http.request({
+      type: 'login/request',
+      parameters: {},
+      data: {
+        username,
+        password
+      }
+    }).then(response => {
+      const { token } = response.data;
 
-    setTimeout(() => {
-      this.dispatch<ILoginResponseAction>({
-        type: 'login/RESPONSE',
+      this.dispatch<IUserLoginResponseAction>({
+        type: 'user/login/RESPONSE',
         data: {
           username,
           token
         }
       });
-    }, 1000);
+    });
 
     return {
       ...state,
@@ -65,7 +90,7 @@ export default class UserReducer extends MyReducer<UserState> {
 
   private onResponse(
     state: Readonly<UserState>,
-    action: ILoginResponseAction
+    action: IUserLoginResponseAction
   ): UserState {
     const { token, username } = action.data;
     console.log('res', token, username);

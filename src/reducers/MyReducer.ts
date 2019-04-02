@@ -1,12 +1,6 @@
 import { Dispatch } from 'redux';
 import { StoreAction } from './RootReducer';
 
-// type toto<S> = constructor(dispatch: Dispatch<StoreAction>): MyReducer<S>;
-
-// interface tata<S> {
-//   constructor: Function;
-// }
-
 export abstract class MyReducer<S> {
   protected readonly dispatch: Dispatch<StoreAction>;
 

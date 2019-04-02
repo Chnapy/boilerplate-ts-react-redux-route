@@ -5,7 +5,7 @@ import { IDispatcher, IPagePropsAbstract } from '../page/PageTypes';
 import { IStoreState } from '../store/StoreState';
 import { UserState } from '../user/UserType';
 import style from './loginPage.module.scss';
-import { ILoginRequestAction } from './LoginPageReducer';
+import { IUserLoginRequestAction } from './LoginPageReducer';
 
 // props
 export interface ILoginPageProps extends IPagePropsAbstract<'login'> {
@@ -14,7 +14,7 @@ export interface ILoginPageProps extends IPagePropsAbstract<'login'> {
 
 // dispatcher
 type ILoginPageDispatcher = IDispatcher<{
-  login: (username: string, password: string) => ILoginRequestAction;
+  login: (username: string, password: string) => IUserLoginRequestAction;
 }>;
 
 // state
@@ -32,18 +32,11 @@ export class LoginPage extends React.Component<
     let subContent;
     switch (userState.type) {
       case 'disconnected':
-        console.log('user state: disconnected - loading:', userState.loading);
         if (userState.loading) {
           subContent = 'Check...';
         }
         break;
       case 'connected':
-        console.log(
-          'user state: connected - username:',
-          userState.username,
-          'token:',
-          userState.token
-        );
         subContent = 'Checked !';
     }
 
@@ -99,8 +92,8 @@ const mapDispatchToProps = (dispatch: Dispatch): ILoginPageDispatcher => {
   return {
     dispatcher: {
       login: (username: string, password: string) =>
-        dispatch<ILoginRequestAction>({
-          type: 'login/REQUEST',
+        dispatch<IUserLoginRequestAction>({
+          type: 'user/login/REQUEST',
           form: {
             username,
             password
