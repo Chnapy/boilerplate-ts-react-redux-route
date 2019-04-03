@@ -13,3 +13,8 @@ export type IHttpSample = IHttpObject<
     toto: number;
   }
 >;
+
+export const sampleRequestProps: IHttpSample['static']['request'] = {
+  postUrl: '/login',
+  method: 'get'
+};

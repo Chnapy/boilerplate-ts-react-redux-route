@@ -20,3 +20,8 @@ export type IHttpLoginRequest = IHttpObject<
     token: string;
   }
 >;
+
+export const loginRequestProps: IHttpLoginRequest['static']['request'] = {
+  postUrl: '/login',
+  method: 'post'
+};

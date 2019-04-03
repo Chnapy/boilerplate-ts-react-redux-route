@@ -1,9 +1,17 @@
 import { IHttpRequestList } from './core/HttpCoreTypes';
-import { IHttpActionLoginRequest, IHttpLoginRequest } from './HttpLogin';
-import { IHttpActionSample, IHttpSample } from './HttpSample';
+import {
+  IHttpActionLoginRequest,
+  IHttpLoginRequest,
+  loginRequestProps
+} from './HttpLogin';
+import {
+  IHttpActionSample,
+  IHttpSample,
+  sampleRequestProps
+} from './HttpSample';
 
 /**
- * This file has to be aggregated with all new HttpAction
+ * This file has to be aggregated with all new Http object
  */
 
 /**
@@ -15,14 +23,8 @@ import { IHttpActionSample, IHttpSample } from './HttpSample';
  *  }
  */
 export const httpRequestList: IHttpRequestList = {
-  'login/request': {
-    postUrl: '/login',
-    method: 'post'
-  },
-  'sample/sample': {
-    postUrl: '/sample',
-    method: 'get'
-  }
+  'login/request': loginRequestProps,
+  'sample/sample': sampleRequestProps
 };
 
 /**
