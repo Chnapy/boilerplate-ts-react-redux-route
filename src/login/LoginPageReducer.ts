@@ -52,46 +52,8 @@ export default class LoginPageReducer extends MyReducer<ILoginPageProps> {
       state = this.getInitialState();
     }
 
-    switch (
-      action.type
-      // case 'login/REQUEST':
-      //   return this.onRequest(state, action);
-
-      // case 'login/RESPONSE':
-      //   return this.onResponse(state, action);
-    ) {
-    }
-
     return {
       ...state
     };
   }
-
-  // private onRequest(
-  //   state: Readonly<ILoginPageProps>,
-  //   action: ILoginRequestAction
-  // ): ILoginPageProps {
-  //   const { username, password } = action.form;
-
-  //   return state;
-  // }
-
-  // private onResponse(
-  //   state: Readonly<ILoginPageProps>,
-  //   action: ILoginResponseAction
-  // ): ILoginPageProps {
-  //   const { token, username } = action.data;
-  //   console.log('res', token, username);
-
-  //   state = {
-  //     ...state,
-  //     userState: {
-  //       type: 'connected',
-  //       token,
-  //       username
-  //     }
-  //   };
-
-  //   return state;
-  // }
 }

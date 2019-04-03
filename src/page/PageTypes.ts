@@ -31,7 +31,9 @@ export interface IPageInfos<
     content: string;
   };
   component: React.ComponentType<{}>;
-  reducer: new (dispatch: Dispatch<StoreAction>) => MyReducer<any>;
+  reducer: new (dispatch: Dispatch<StoreAction>, ...args: any[]) => MyReducer<
+    any
+  >;
 }
 
 export type IPageConfigList = { [T in PageType]: IPageInfos<T> };

@@ -10,9 +10,15 @@ export abstract class MyReducer<S> {
 
   abstract getInitialState(action?: StoreAction): S;
 
-  reduce = (state: Readonly<S> | undefined, action: StoreAction): S => {
+  reduce = (
+    state: (S extends any ? any : Readonly<S>) | undefined,
+    action: StoreAction
+  ): Readonly<S> => {
     return this.onReduce(state || this.getInitialState(action), action);
   };
 
-  protected abstract onReduce(state: S, action: StoreAction): S;
+  protected abstract onReduce(
+    state: Readonly<S>,
+    action: StoreAction
+  ): Readonly<S>;
 }
