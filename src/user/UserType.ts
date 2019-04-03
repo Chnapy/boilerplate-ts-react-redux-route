@@ -7,6 +7,7 @@ interface IUserStateAbstract<T extends UserStateType> {
 export interface IUserStateDisconnected
   extends IUserStateAbstract<'disconnected'> {
   loading?: boolean;
+  error?: string;
 }
 
 // TODO abilities

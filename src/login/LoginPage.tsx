@@ -29,11 +29,14 @@ export class LoginPage extends React.Component<
     const { userState } = this.props;
     console.log('Login render', this.props);
 
-    let subContent;
+    let subContent = '';
     switch (userState.type) {
       case 'disconnected':
         if (userState.loading) {
-          subContent = 'Check...';
+          subContent = 'Check... ';
+        }
+        if (userState.error) {
+          subContent += userState.error;
         }
         break;
       case 'connected':
@@ -43,7 +46,7 @@ export class LoginPage extends React.Component<
     return (
       <div id={style.login_page}>
         <h1>LoginPage</h1>
-        <small>{JSON.stringify(this.props)}</small>
+        <code>{JSON.stringify(this.props)}</code>
 
         <div>
           <form onSubmit={this.onSubmit}>
@@ -56,7 +59,7 @@ export class LoginPage extends React.Component<
             <br />
 
             <input type="submit" />
-            {subContent}
+            <code>{subContent}</code>
           </form>
         </div>
       </div>

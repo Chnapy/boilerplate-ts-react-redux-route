@@ -15,7 +15,7 @@ export class HomePage extends React.Component<IHomePageProps, IHomePageState> {
     return (
       <div id={style.home_page}>
         <h1>HomePage</h1>
-        <small>{JSON.stringify(this.props)}</small>
+        <code>{JSON.stringify(this.props)}</code>
       </div>
     );
   }

@@ -11,18 +11,28 @@ export interface IUserLoginRequestAction extends Action<'user/login/REQUEST'> {
   };
 }
 
-export interface IUserLoginResponseAction
-  extends Action<'user/login/RESPONSE'> {
-  type: 'user/login/RESPONSE';
+export interface IUserLoginResponseSuccessAction
+  extends Action<'user/login/RESPONSE/SUCCESS'> {
+  type: 'user/login/RESPONSE/SUCCESS';
   data: {
     username: string;
     token: string;
   };
 }
 
+export interface IUserLoginResponseFailureAction
+  extends Action<'user/login/RESPONSE/FAILURE'> {
+  type: 'user/login/RESPONSE/FAILURE';
+  error: {
+    code: number;
+    message: string;
+  };
+}
+
 export type UserLoginAction =
   | IUserLoginRequestAction
-  | IUserLoginResponseAction;
+  | IUserLoginResponseSuccessAction
+  | IUserLoginResponseFailureAction;
 
 export default class LoginPageReducer extends MyReducer<ILoginPageProps> {
   getInitialState(): ILoginPageProps {

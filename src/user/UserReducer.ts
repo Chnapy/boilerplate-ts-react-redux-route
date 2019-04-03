@@ -1,8 +1,10 @@
 import { Action, Dispatch } from 'redux';
-import Http from '../data/Http';
+import Http from '../data/http/core/Http';
+import {} from '../data/http/HttpDynamicTypes';
 import {
   IUserLoginRequestAction,
-  IUserLoginResponseAction
+  IUserLoginResponseFailureAction,
+  IUserLoginResponseSuccessAction
 } from '../login/LoginPageReducer';
 import { MyReducer } from '../reducers/MyReducer';
 import { StoreAction } from '../reducers/RootReducer';
@@ -41,8 +43,11 @@ export default class UserReducer extends MyReducer<UserState> {
       case 'user/login/REQUEST':
         return this.onRequest(state, action);
 
-      case 'user/login/RESPONSE':
-        return this.onResponse(state, action);
+      case 'user/login/RESPONSE/SUCCESS':
+        return this.onResponseSuccess(state, action);
+
+      case 'user/login/RESPONSE/FAILURE':
+        return this.onResponseFailure(state, action);
     }
 
     return state;
@@ -58,28 +63,34 @@ export default class UserReducer extends MyReducer<UserState> {
       throw new Error();
     }
 
-    // TODO
-    // make auth
-    // then on response:
-
-    const http = Http.request({
+    const httpRequest = Http.request({
       type: 'login/request',
       parameters: {},
       data: {
         username,
         password
       }
-    }).then(response => {
-      const { token } = response.data;
+    })
+      .then(response => {
+        const { token } = response.data;
 
-      this.dispatch<IUserLoginResponseAction>({
-        type: 'user/login/RESPONSE',
-        data: {
-          username,
-          token
-        }
+        this.dispatch({
+          type: 'user/login/RESPONSE/SUCCESS',
+          data: {
+            username,
+            token
+          }
+        });
+      })
+      .catch((err: Error) => {
+        this.dispatch({
+          type: 'user/login/RESPONSE/FAILURE',
+          error: {
+            code: -1,
+            message: err.message
+          }
+        });
       });
-    });
 
     return {
       ...state,
@@ -88,17 +99,32 @@ export default class UserReducer extends MyReducer<UserState> {
     };
   }
 
-  private onResponse(
+  private onResponseSuccess(
     state: Readonly<UserState>,
-    action: IUserLoginResponseAction
+    action: IUserLoginResponseSuccessAction
   ): UserState {
     const { token, username } = action.data;
-    console.log('res', token, username);
+    console.log('response success', token, username);
 
     state = {
       type: 'connected',
       token,
       username
+    };
+
+    return state;
+  }
+
+  private onResponseFailure(
+    state: Readonly<UserState>,
+    action: IUserLoginResponseFailureAction
+  ): UserState {
+    const { code, message } = action.error;
+    console.log('response failure', code, message);
+
+    state = {
+      type: 'disconnected',
+      error: message
     };
 
     return state;
